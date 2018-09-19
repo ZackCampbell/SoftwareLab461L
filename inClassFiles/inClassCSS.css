@@ -1,0 +1,17 @@
+.table1 {
+    background-color: aquamarine;
+}
+
+.rowHead {
+    background-color: blueviolet;
+}
+
+.rows {
+    background-color: lightgreen;
+}
+
+#helloWorld {
+    text-align: center;
+    color: red;
+    font: italic;
+}
