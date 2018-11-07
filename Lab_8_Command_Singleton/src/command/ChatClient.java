@@ -43,8 +43,7 @@ public class ChatClient implements Runnable{
 			} catch(InterruptedException ie) {
 				ie.printStackTrace();
 			}
-
-			// WHAT SHOULD YOU DO WITH THE COMMAND?
+			c.execute();
 
 		}
     }
