@@ -17,52 +17,53 @@ public class ChatListener implements Runnable {
     private ChatClient chatClient;
 
     ChatListener(Socket mySocket, ChatClient chatClient){
-	this.chatClient = chatClient;
-	try{
-	    in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
-	}
-	catch(IOException ioe){
-	    ioe.printStackTrace();
-	}
+		this.chatClient = chatClient;
+		try {
+			in = new BufferedReader(new InputStreamReader(mySocket.getInputStream()));
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
     }
     
     public void run(){
-	String fromServer = null;
-	try{
-	    fromServer = in.readLine();
-	}
-	catch(IOException ioe){
-	    ioe.printStackTrace();
-	}
-	while(!stopped && fromServer != null) {
-	    if(fromServer.equals("QUIT")){
-		stopped = true;
-	    }
-	    else if(fromServer.equals("BEEP")){
+		String fromServer = null;
+		try {
+			fromServer = in.readLine();
+		} catch(IOException ioe){
+			ioe.printStackTrace();
+		}
+		while (!stopped && fromServer != null) {
+			if (fromServer.equals("QUIT")) {
+				stopped = true;
+			} else if (fromServer.equals("BEEP")) {
 
-		// CREATE NEW BeepCommand object
-		// what should you do with it after it's created?
-		// hint: don't just go executing it. Why not?
+				Speaker speaker = Speaker.getInstance();
+				SpeakerBeepCommand command = new SpeakerBeepCommand(speaker);
+				command.execute();
+			// CREATE NEW BeepCommand object
+			// what should you do with it after it's created?
+			// hint: don't just go executing it. Why not?
 
-	    }
-	    else if(fromServer.equals("VIBRATE")){
+			} else if (fromServer.equals("VIBRATE")) {
 
-		// CREATE NEW VibrateCommand object
+				VibrationMotor motor = VibrationMotor.getInstance();
+				MotorVibrateCommand vibrate = new MotorVibrateCommand(motor);
+				vibrate.execute();
+			// CREATE NEW VibrateCommand object
 
-	    }
-	    else{
-		
-		// CREATE NEW ConsoleCommand object
-		// You'll have to do something slightly different here since you
-		// need to print the string fromServer
-
-	    }
-	    try{
-		fromServer = in.readLine();
-	    }
-	    catch(IOException ioe){
-		ioe.printStackTrace();
-	    }
-	}
+			} else {
+				Console console = Console.getInstance();
+				ConsoleCommand command = new ConsoleCommand(console, fromServer);
+				command.execute();
+			// CREATE NEW ConsoleCommand object
+			// You'll have to do something slightly different here since you
+			// need to print the string fromServer
+			}
+			try {
+				fromServer = in.readLine();
+			} catch(IOException ioe){
+				ioe.printStackTrace();
+			}
+		}
     }
 }

@@ -1,13 +1,22 @@
 package command;
 
-// REFACTOR ME. I SHOULD BE A SINGLETON!
-
-public class Console{
-    
+public class Console {
+    private volatile static Console uniqueInstance;
     public Console(){
     }
 
-    public void print(String toPrint){
-	System.out.println(toPrint);
+    public static Console getInstance() {
+        if (uniqueInstance == null) {
+            synchronized (Console.class) {
+                if (uniqueInstance == null) {
+                    uniqueInstance = new Console();
+                }
+            }
+        }
+        return uniqueInstance;
+    }
+
+    public static void print(String toPrint){
+        System.out.println(toPrint);
     }
 }

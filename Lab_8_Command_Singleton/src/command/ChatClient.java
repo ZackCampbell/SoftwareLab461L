@@ -20,35 +20,33 @@ public class ChatClient implements Runnable{
     private LinkedBlockingQueue<Command> queue;
 
     public ChatClient(int numServers, int startPort){
-	this.numServers = numServers;
-	this.startPort = startPort;
-	queue = new LinkedBlockingQueue<Command>();
-	for(int i = 0; i<numServers; i++){
-	    Socket nextSocket = null;
-	    try{
-		nextSocket = new Socket("127.0.0.1", (startPort+i));
-	    }
-	    catch(IOException ioe){
-		ioe.printStackTrace();
-	    }
-	    (new Thread(new ChatListener(nextSocket, this))).start();
-	}
+		this.numServers = numServers;
+		this.startPort = startPort;
+		queue = new LinkedBlockingQueue<Command>();
+		for(int i = 0; i<numServers; i++){
+			Socket nextSocket = null;
+			try {
+				nextSocket = new Socket("127.0.0.1", (startPort+i));
+			} catch(IOException ioe){
+				ioe.printStackTrace();
+			}
+			(new Thread(new ChatListener(nextSocket, this))).start();
+		}
     }
 
     public void run(){
-	System.out.println("Chat client started");
-	while(true){
-	    Command c = null;
-	    try{
-		c = queue.take();
-	    }
-	    catch(InterruptedException ie){
-		ie.printStackTrace();
-	    }
+		System.out.println("Chat client started");
+		while (true) {
+			Command c = null;
+			try {
+				c = queue.take();
+			} catch(InterruptedException ie) {
+				ie.printStackTrace();
+			}
 
-	    // WHAT SHOULD YOU DO WITH THE COMMAND?
+			// WHAT SHOULD YOU DO WITH THE COMMAND?
 
-	}
+		}
     }
 
     /*
@@ -56,13 +54,13 @@ public class ChatClient implements Runnable{
      * Do you know what my comment embedded in the method below means?
      */
     public void enqueueCommand(Command c){
-	// don't have to worry about thread safety because the queue is itself thread safe
-	try{
-	    queue.put(c);
-	}
-	catch(InterruptedException ie){
-	    ie.printStackTrace();
-	}
+		// don't have to worry about thread safety because the queue is itself thread safe
+		try{
+			queue.put(c);
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
     }
 
 }

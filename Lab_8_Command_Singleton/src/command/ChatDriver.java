@@ -11,15 +11,15 @@ public class ChatDriver {
     private static int startPort = 1977;
 
     public static void main(String[] args){
-	if(args.length < 1){
-	    System.err.println("You have to provide at least one name!");
-	    System.exit(0);
-	}
-	for(int i = 0; i<args.length; i++){
-	    (new Thread((new ChatServer(args[i], (startPort + i))))).start();
-	}
-	ChatClient c = new ChatClient(args.length, startPort);
-	c.run();
+		if(args.length < 1){
+			System.err.println("You have to provide at least one name!");
+			System.exit(0);
+		}
+		for(int i = 0; i<args.length; i++){
+			(new Thread((new ChatServer(args[i], (startPort + i))))).start();
+		}
+		ChatClient c = new ChatClient(args.length, startPort);
+		c.run();
     }
     
 }
